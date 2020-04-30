@@ -63,8 +63,9 @@ ONBUILD RUN mkdir -p $SPACKUSERDIR \
   &&  echo -n -e "   install_tree: $SPACK_UPSTREAM_ROOT/opt/spack" \
   &&  echo -n -e "   modules:\n      tcl: $SPACK_UPSTREAM_ROOT/share/spack/modules" ) \
   >> .spack/upstream.yaml \
-  && . $SPACK_ROOT/share/spack/setup-env.sh \
+  && . $SPACKUSERDIR/share/spack/setup-env.sh \
   && spack compiler add $(spack location -i gcc@8.3.0)
 
-ENTRYPOINT ["/bin/bash", "$SPACK_ROOT/share/spack/docker/entrypoint.bash"]
-CMD ["docker-shell"]
+#ENTRYPOINT ["/bin/bash", "$SPACK_UPSTREAM_ROOT/share/spack/docker/entrypoint.bash"]
+ENTRYPOINT ["/bin/bash"]
+#CMD ["docker-shell"]
