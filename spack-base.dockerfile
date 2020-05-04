@@ -1,5 +1,5 @@
-ARG BASE_CONTAINER=centos7:0.1
-FROM arcane/${BASE_CONTAINER}
+ARG BASE_CONTAINER=centos7
+FROM arcane:${BASE_CONTAINER}
 
 LABEL maintener.email=<cedric.chevalier@cea.fr>
 
@@ -11,8 +11,7 @@ ARG CURRENTLY_BUILDING_DOCKER_IMAGE=1
 ENV FORCE_UNSAFE_CONFIGURE=1          \
     SPACK_UPSTREAM_ROOT=/opt/spack
 
-RUN ( echo ". /usr/share/lmod/lmod/init/bash"                       \
- &&   echo ". $SPACK_UPSTREAM_ROOT/share/spack/setup-env.sh"                \
+RUN ( echo ". $SPACK_UPSTREAM_ROOT/share/spack/setup-env.sh"                \
  &&   echo "if [ \"\$CURRENTLY_BUILDING_DOCKER_IMAGE\" '!=' '1' ]"  \
  &&   echo "then"                                                   \
  &&   echo "  . $SPACK_UPSTREAM_ROOT/share/spack/spack-completion.bash"     \
