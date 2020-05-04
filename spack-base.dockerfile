@@ -42,14 +42,15 @@ RUN        . /etc/profile.d/spack.sh \
   && spack compiler add `spack location -i gcc` \
   && spack clean -a
 
-ONBUILD ARG USERNAME=user
+ONBUILD ENV USERNAME=user
 ONBUILD ARG USERPASSWORD=password
 ONBUILD ARG USERID=1000
 ONBUILD ARG GROUPID=1000
-ONBUILD ARG SPACKUSERDIR=/home/${USERNAME}/spack
+ONBUILD ENV SPACKUSERDIR=/home/${USERNAME}/spack
 
-ONBUILD RUN useradd -g $GROUPID -u $USERID -m $USERNAME -s /bin/bash \
-  yes $USERPASSWORD | passwd $USERNAME
+ONBUILD RUN groupadd -g $GROUPID $USERNAME \
+ && useradd -g $GROUPID -u $USERID -m -s /bin/bash ${USERNAME} \
+ && yes $USERPASSWORD | passwd $USERNAME
 
 ONBUILD USER $USERNAME
 ONBUILD WORKDIR /home/$USERNAME
@@ -60,12 +61,11 @@ ONBUILD RUN mkdir -p $SPACKUSERDIR \
   >> ~/.bash_profile \
   && mkdir .spack \
   && (echo -n -e "upstreams:\n  main:\n" \
-  &&  echo -n -e "   install_tree: $SPACK_UPSTREAM_ROOT/opt/spack" \
-  &&  echo -n -e "   modules:\n      tcl: $SPACK_UPSTREAM_ROOT/share/spack/modules" ) \
-  >> .spack/upstream.yaml \
-  && . $SPACKUSERDIR/share/spack/setup-env.sh \
+  &&  echo -n -e "   install_tree: $SPACK_UPSTREAM_ROOT/opt/spack\n" \
+  &&  echo -n -e "   modules:\n      tcl: $SPACK_UPSTREAM_ROOT/share/spack/modules\n" ) \
+  >> .spack/upstreams.yaml \
+  && . $SPACK_UPSTREAM_ROOT/share/spack/setup-env.sh \
   && spack compiler add $(spack location -i gcc@8.3.0)
 
-#ENTRYPOINT ["/bin/bash", "$SPACK_UPSTREAM_ROOT/share/spack/docker/entrypoint.bash"]
 ENTRYPOINT ["/bin/bash"]
-#CMD ["docker-shell"]
+
