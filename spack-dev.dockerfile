@@ -1,5 +1,5 @@
-ARG BASE_CONTAINER=centos7:0.1
-FROM arcane/spack_base:0.1
+ARG BASE_CONTAINER=centos-7
+FROM arcane:spack_base-$BASE_CONTAINER
 
 LABEL maintener.email=<cedric.chevalier@cea.fr>
 LABEL arcane.repository.tag=0.1

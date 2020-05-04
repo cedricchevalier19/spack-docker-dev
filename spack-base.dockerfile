@@ -1,4 +1,4 @@
-ARG BASE_CONTAINER=centos7
+ARG BASE_CONTAINER=centos-7
 FROM arcane:${BASE_CONTAINER}
 
 LABEL maintener.email=<cedric.chevalier@cea.fr>
@@ -25,7 +25,7 @@ RUN [ -f ~/.profile ]                                               \
  && sed -i 's/mesg n/( tty -s \\&\\& mesg n || true )/g' ~/.profile \
  || true
 
-ARG SPACK_VERSION=0.14.1
+ARG SPACK_VERSION=0.14.2
 # Install last release for spack, as upstream
 RUN mkdir -p $SPACK_UPSTREAM_ROOT && \
   curl -s -L https://github.com/spack/spack/releases/download/v${SPACK_VERSION}/spack-${SPACK_VERSION}.tar.gz \
