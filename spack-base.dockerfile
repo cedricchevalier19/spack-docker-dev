@@ -56,7 +56,7 @@ ONBUILD WORKDIR /home/$USERNAME
 ONBUILD SHELL ["/bin/bash", "-l", "-c"]
 
 ONBUILD RUN mkdir -p $SPACKUSERDIR \
-  && ( echo ". $SPACKUSERDIR/share/spack/setup.sh" ) \
+  && ( echo ". $SPACKUSERDIR/share/spack/setup-env.sh" ) \
   >> ~/.bash_profile \
   && mkdir .spack \
   && (echo -n -e "upstreams:\n  main:\n" \
@@ -64,7 +64,8 @@ ONBUILD RUN mkdir -p $SPACKUSERDIR \
   &&  echo -n -e "   modules:\n      tcl: $SPACK_UPSTREAM_ROOT/share/spack/modules\n" ) \
   >> .spack/upstreams.yaml \
   && . $SPACK_UPSTREAM_ROOT/share/spack/setup-env.sh \
+  && spack compiler add /usr/bin \
   && spack compiler add $(spack location -i gcc@8.3.0)
 
-ENTRYPOINT ["/bin/bash"]
+ENTRYPOINT ["/bin/bash", "-l"]
 

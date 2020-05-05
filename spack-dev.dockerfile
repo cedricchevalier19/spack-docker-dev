@@ -13,5 +13,5 @@ SHELL ["/bin/bash", "-l", "-c"]
 
 VOLUME "$SPACKUSERDIR"
 
-ENTRYPOINT ["/bin/bash"]
+ENTRYPOINT ["/bin/bash", "-l"]
 
