@@ -2,8 +2,8 @@ FROM centos:8
 
 LABEL maintener.email=<cedric.chevalier@cea.fr>
 
-LABEL arcane.repository.tag=0.1
-LABEL arcane.centos8.version=0.1
+LABEL spack_playground.repository.tag=0.1
+LABEL spack_playground.centos8.version=0.1
 
 ENV FORCE_UNSAFE_CONFIGURE=1          \
     DEBIAN_FRONTEND=noninteractive

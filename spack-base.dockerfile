@@ -1,10 +1,10 @@
 ARG BASE_CONTAINER=centos-7
-FROM arcane:${BASE_CONTAINER}
+FROM spack_playground:${BASE_CONTAINER}
 
 LABEL maintener.email=<cedric.chevalier@cea.fr>
 
-LABEL arcane.repository.tag=0.1
-LABEL arcane.base_spack.version=0.1
+LABEL spack_playground.repository.tag=0.1
+LABEL spack_playground.base.version=0.1
 
 ARG CURRENTLY_BUILDING_DOCKER_IMAGE=1
 
@@ -40,32 +40,6 @@ RUN        . /etc/profile.d/spack.sh \
   && spack install gcc@8.3.0 \
   && spack compiler add `spack location -i gcc` \
   && spack clean -a
-
-ONBUILD ENV USERNAME=user
-ONBUILD ARG USERPASSWORD=password
-ONBUILD ARG USERID=1000
-ONBUILD ARG GROUPID=1000
-ONBUILD ENV SPACKUSERDIR=/home/${USERNAME}/spack
-
-ONBUILD RUN groupadd -g $GROUPID $USERNAME \
- && useradd -g $GROUPID -u $USERID -m -s /bin/bash ${USERNAME} \
- && yes $USERPASSWORD | passwd $USERNAME
-
-ONBUILD USER $USERNAME
-ONBUILD WORKDIR /home/$USERNAME
-ONBUILD SHELL ["/bin/bash", "-l", "-c"]
-
-ONBUILD RUN mkdir -p $SPACKUSERDIR \
-  && ( echo ". $SPACKUSERDIR/share/spack/setup-env.sh" ) \
-  >> ~/.bash_profile \
-  && mkdir .spack \
-  && (echo -n -e "upstreams:\n  main:\n" \
-  &&  echo -n -e "   install_tree: $SPACK_UPSTREAM_ROOT/opt/spack\n" \
-  &&  echo -n -e "   modules:\n      tcl: $SPACK_UPSTREAM_ROOT/share/spack/modules\n" ) \
-  >> .spack/upstreams.yaml \
-  && . $SPACK_UPSTREAM_ROOT/share/spack/setup-env.sh \
-  && spack compiler add /usr/bin \
-  && spack compiler add $(spack location -i gcc@8.3.0)
 
 ENTRYPOINT ["/bin/bash", "-l"]
 
