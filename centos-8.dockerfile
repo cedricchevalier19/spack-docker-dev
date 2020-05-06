@@ -18,7 +18,7 @@ RUN yum update -y                                             \
         gcc-gfortran   git       gnupg2     hostname          \
         iproute        Lmod      make       patch             \
         openssh-server python3   python3-devel python3-pip tcl \
-        unzip          which                                  \
+        unzip          which     passwd                        \
  && pip3 install boto3                                         \
  && rm -rf /var/cache/yum                                     \
  && yum clean all
