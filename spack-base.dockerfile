@@ -37,7 +37,7 @@ RUN mkdir -p $SPACK_UPSTREAM_ROOT && \
 # install software
 RUN        . /etc/profile.d/spack.sh \
 #  && spack bootstrap \
-  && spack install gcc@8.3.0 \
+  && spack install gcc@8.3.0 +strip \
   && spack compiler add `spack location -i gcc` \
   && spack clean -a
 
